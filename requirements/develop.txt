@@ -1,0 +1,2 @@
+black==20.8b1 # Pois a nova versão não funciona com o decker
+decker==0.3.0
