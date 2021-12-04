@@ -1,0 +1,53 @@
+variables:
+  GIT_DEPTH: 1
+
+stages:
+  - build-images
+
+build-image-base:
+  image: docker:git
+  stage: build-images
+  cache: {}
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build -f shipping/Dockerfile-base -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME -t $CI_REGISTRY_IMAGE:base .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE:base
+  dependencies: []
+  needs: []
+  when: manual
+  only:
+    - develop
+    - master
+    - tags
+  except:
+    - schedules
+
+
+build-image-latest:
+  image: docker:git
+  stage: build-images
+  cache: {}
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build -f shipping/Dockerfile -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME -t $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE:latest
+  dependencies: []
+  needs: []
+  when: manual
+  only:
+    - master
+    - tags
+  except:
+    - schedules

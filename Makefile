@@ -26,5 +26,14 @@ venv:
 run-dev:
 	$(PYTHON_BIN) manage.py runserver 0.0.0.0:8000
 
+.PHONY: secret-key
+secret-key:
+	$(PYTHON_BIN) -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 
+.PHONY: build-base
+build-base:
+	docker build -t registry.gitlab.com/ugleiton/kutt-admin:base -f Dockerfile-base .
 
+.PHONY: build
+build:
+	docker build -t registry.gitlab.com/ugleiton/kutt-admin:latest .
