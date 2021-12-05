@@ -6,7 +6,7 @@ from .models import Users,Links,Visits
 class UsersAdmin(admin.ModelAdmin):
     list_display = ('verified','email','created_at','updated_at','_opcoes')
     search_fields = ("email",)
-    readonly_fields = ('created_at','updated_at','_urlLinks' )
+    readonly_fields = ('created_at','updated_at' )
     # save_on_top = True
     # save_as = True
     fieldsets = [

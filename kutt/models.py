@@ -13,10 +13,10 @@ import hashlib
 
 class Domains(models.Model):
     banned = models.BooleanField()
-    banned_by = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True)
+    banned_by = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True,related_name='domains_banned')
     address = models.CharField(unique=True, max_length=255)
     homepage = models.CharField(max_length=255, blank=True, null=True)
-    user = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True,related_name='domains')
     uuid = models.UUIDField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
@@ -30,7 +30,7 @@ class Domains(models.Model):
 class Hosts(models.Model):
     address = models.CharField(unique=True, max_length=255)
     banned = models.BooleanField()
-    banned_by = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True)
+    banned_by = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True,related_name='hosts')
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 
@@ -72,12 +72,12 @@ class Links(models.Model):
     address = models.CharField(verbose_name='URL Curta',max_length=255)
     description = models.CharField(verbose_name='Descrição',max_length=255, blank=True, null=True)
     banned = models.BooleanField(verbose_name='Banido')
-    banned_by = models.ForeignKey('Users', models.CASCADE, blank=True, null=True)
+    banned_by = models.ForeignKey('Users', models.CASCADE, blank=True, null=True,related_name='links_banned')
     domain = models.ForeignKey(Domains, models.DO_NOTHING, blank=True, null=True)
     password = models.CharField(max_length=255,verbose_name="Senha", blank=True, null=True)
     expire_in = models.DateTimeField(blank=True, null=True,verbose_name="Expira em")
     target = models.CharField(verbose_name="URL Original",max_length=2040)
-    user = models.ForeignKey('Users', models.DO_NOTHING,verbose_name="Usuário", blank=True, null=True)
+    user = models.ForeignKey('Users', models.DO_NOTHING,verbose_name="Usuário", blank=True, null=True,related_name='links')
     visit_count = models.IntegerField(verbose_name="Quantidade de visitas")
     created_at = models.DateTimeField(verbose_name="Criado em")
     updated_at = models.DateTimeField(verbose_name="Atualizado em")
@@ -120,7 +120,7 @@ class Links(models.Model):
 class Users(models.Model):
     apikey = models.CharField(max_length=255, blank=True, null=True)
     banned = models.BooleanField(verbose_name='Banido')
-    banned_by = models.ForeignKey('self', models.DO_NOTHING,verbose_name='Banido por', blank=True, null=True)
+    banned_by = models.ForeignKey('self', models.DO_NOTHING,verbose_name='Banido por', blank=True, null=True,related_name='users_banned')
     cooldowns = models.TextField(blank=True, null=True)  # This field type is a guess.
     email = models.CharField(unique=True, max_length=255)
     password = models.CharField(max_length=255,verbose_name="Senha")
