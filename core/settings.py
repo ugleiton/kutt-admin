@@ -172,14 +172,20 @@ SIMPLEUI_CONFIG = {
                 }]
         }, 
         {
-        'name': 'Kutt',
-        'icon': 'fa fa-cogs',
-        'models': [
-          {
-            'name': 'Usuários',
-            'url': 'kutt/users/',
-            'icon': 'fa fa-users'
-        }]
+            'name': 'Kutt',
+            'icon': 'fa fa-cogs',
+            'models': [
+                {
+                    'name': 'Usuários',
+                    'url': 'kutt/users/',
+                    'icon': 'fa fa-users'
+                },
+                {
+                    'name': 'Links',
+                    'url': 'kutt/links/',
+                    'icon': 'fa fa-link'
+                },
+        ]
     }]
 }
 
