@@ -21,6 +21,17 @@ class UsersAdmin(admin.ModelAdmin):
         }),
     ]
 
+    def get_model_perms(self, request, *args, **kwargs):
+        """
+                Return a dict of all perms for this model. This dict has the keys
+                ``add``, ``change``, ``delete``, and ``view`` mapping to the True/False
+                for each of those actions.
+                """
+        return {
+            'add': False,
+            'change': self.has_change_permission(request),
+            'delete': self.has_delete_permission(request),
+        }
 # Register your models here.
 @admin.register(Links)
 class LinksAdmin(admin.ModelAdmin):
@@ -32,13 +43,23 @@ class LinksAdmin(admin.ModelAdmin):
     # save_as = True
     fieldsets = [
         ('Geral', {
-            'fields': ['address', 
+            'fields': ['target',
+                       'address', 
                        'description',
                        'visit_count',
                        'user',
+                       'password',
                        'banned',
                        'expire_in',
                        'created_at',
                        'updated_at']
         }),
     ]
+
+    def get_model_perms(self, *args, **kwargs):
+        """
+                Return a dict of all perms for this model. This dict has the keys
+                ``add``, ``change``, ``delete``, and ``view`` mapping to the True/False
+                for each of those actions.
+                """
+        return {}

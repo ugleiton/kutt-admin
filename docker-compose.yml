@@ -17,14 +17,8 @@ services:
       - POSTGRESKUTT_USER=${POSTGRESKUTT_USER}
       - POSTGRESKUTT_PASSWORD=${POSTGRESKUTT_PASSWORD}
       - SITE_TITLE=${SITE_TITLE}
-      - DEBUG=True
     ports:
       - "8000:8000"
-    volumes:
-      - ./kutt:/app/kutt
-    # command: tail -f /dev/null
-    networks:
-      - escoteirosrs_gateway-network
       
 
 networks:

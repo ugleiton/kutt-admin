@@ -154,3 +154,43 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Config SimpleUi
+SIMPLEUI_CONFIG = {
+    'system_keep':False,
+    'menus': [
+        {
+            'app': 'auth',
+            'name': 'Acesso Admin',
+            'icon': 'fas fa-user-shield',
+            'models': [
+                {
+                    'name': 'Administradores',
+                    'icon': 'fa fa-user-cog',
+                    'url': 'auth/user/'
+                }]
+        }, 
+        {
+        'name': 'Kutt',
+        'icon': 'fa fa-cogs',
+        'models': [
+          {
+            'name': 'Usuários',
+            'url': 'kutt/users/',
+            'icon': 'fa fa-users'
+        }]
+    }]
+}
+
+
+
+# SIMPLEUI_ICON = {
+#     'Kutt': 'fas fa-cogs',
+#     'Links': 'fa fa-link',
+#     'Usuários': 'fa fa-user-tie',
+# }
+
+SIMPLEUI_HOME_INFO = False
+SIMPLEUI_HOME_QUICK = False
+SIMPLEUI_LOGO = os.getenv('SITE_LOGO','https://avatars2.githubusercontent.com/u/13655483?s=60&v=4')

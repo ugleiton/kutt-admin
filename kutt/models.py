@@ -7,6 +7,9 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.utils.safestring import mark_safe
+import bcrypt
+import base64
+import hashlib
 
 class Domains(models.Model):
     banned = models.BooleanField()
@@ -66,14 +69,14 @@ class KnexMigrationsLock(models.Model):
 
 
 class Links(models.Model):
-    address = models.CharField(verbose_name='Título',max_length=255)
+    address = models.CharField(verbose_name='URL Curta',max_length=255)
     description = models.CharField(verbose_name='Descrição',max_length=255, blank=True, null=True)
     banned = models.BooleanField(verbose_name='Banido')
     banned_by = models.ForeignKey('Users', models.CASCADE, blank=True, null=True)
     domain = models.ForeignKey(Domains, models.DO_NOTHING, blank=True, null=True)
-    password = models.CharField(max_length=255, blank=True, null=True)
+    password = models.CharField(max_length=255,verbose_name="Senha", blank=True, null=True)
     expire_in = models.DateTimeField(blank=True, null=True,verbose_name="Expira em")
-    target = models.CharField(verbose_name="Url",max_length=2040)
+    target = models.CharField(verbose_name="URL Original",max_length=2040)
     user = models.ForeignKey('Users', models.DO_NOTHING,verbose_name="Usuário", blank=True, null=True)
     visit_count = models.IntegerField(verbose_name="Quantidade de visitas")
     created_at = models.DateTimeField(verbose_name="Criado em")
@@ -101,13 +104,26 @@ class Links(models.Model):
         return mark_safe(opcoes)
     _opcoes.short_description = "Opções"
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__original_password = self.password
+
+    #alterar a senha do usuario usando criptografia bcrypt https://github.com/thedevs-network/kutt/blob/0bc0e6629ba7d14bbe1ef0857ca9caf7110e953c/server/queries/link.ts#L126
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        if self.password != self.__original_password:
+            hashed = bcrypt.hashpw(self.password.encode(),bcrypt.gensalt(12))
+            self.password = hashed.decode()
+            self.__original_password = hashed.decode()
+        super().save(force_insert, force_update, *args, **kwargs)
+
+
 class Users(models.Model):
     apikey = models.CharField(max_length=255, blank=True, null=True)
     banned = models.BooleanField(verbose_name='Banido')
     banned_by = models.ForeignKey('self', models.DO_NOTHING,verbose_name='Banido por', blank=True, null=True)
     cooldowns = models.TextField(blank=True, null=True)  # This field type is a guess.
     email = models.CharField(unique=True, max_length=255)
-    password = models.CharField(max_length=255)
+    password = models.CharField(max_length=255,verbose_name="Senha")
     reset_password_expires = models.DateTimeField(blank=True, null=True)
     reset_password_token = models.CharField(max_length=255, blank=True, null=True)
     change_email_expires = models.DateTimeField(blank=True, null=True)
@@ -141,6 +157,19 @@ class Users(models.Model):
         """
         return mark_safe(opcoes)
     _opcoes.short_description = "Opções"
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__original_password = self.password
+
+    #alterar a senha do usuario usando criptografia bcrypt https://github.com/thedevs-network/kutt/blob/0bc0e6629ba7d14bbe1ef0857ca9caf7110e953c/server/handlers/auth.ts#L114
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        if self.password != self.__original_password:
+            hashed = bcrypt.hashpw(self.password.encode(),bcrypt.gensalt(12))
+            self.password = hashed.decode()
+            self.__original_password = hashed.decode()
+        super().save(force_insert, force_update, *args, **kwargs)
 
 class Visits(models.Model):
     countries = models.JSONField(blank=True, null=True)
