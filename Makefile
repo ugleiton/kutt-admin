@@ -37,3 +37,6 @@ build-base:
 .PHONY: build
 build:
 	docker build -t registry.gitlab.com/ugleiton/kutt-admin:latest .
+
+
+

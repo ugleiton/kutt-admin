@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,9 +84,17 @@ DATABASES = {
         'USER': os.getenv('POSTGRES_USER','djangousr'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD','djangopw'),
         'CONN_MAX_AGE':600,
-    }
-}
+    },
+    'kuttdatabase': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': os.getenv('DATABASEKUTT_HOST','localhost'),
+        'NAME': os.getenv('POSTGRESKUTT_DB','kuttdb'),
+        'USER': os.getenv('POSTGRESKUTT_USER','kuttusr'),
+        'PASSWORD': os.getenv('POSTGRESKUTT_PASSWORD','kuttpw'),
+        'CONN_MAX_AGE':600,
+    }}
 
+DATABASE_ROUTERS = ['core.routes_db.DjangoRouter' ]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

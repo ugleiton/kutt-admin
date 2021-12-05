@@ -2,23 +2,31 @@ version: '2'
 
 services:
 
-  postgres:
-    container_name: 
-      "postgres"
-    image: "postgres:9.6-alpine"
-    restart: 
-      "always"
-    env_file:
-        - .env
-
   kuttadmin:
-      container_name: kuttadmin
-      image: registry.gitlab.com/ugleiton/kutt-admin:latest
-      restart: always
-      env_file:
-        - .env
-      ports:
-        - "8000:8000"
-      depends_on: 
-        - postgres
-      command: tail -f /dev/null
+    container_name: kuttadmin
+    image: registry.gitlab.com/ugleiton/kutt-admin:latest
+    restart: always
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASEKUTT_HOST=${DATABASEKUTT_HOST}
+      - POSTGRESKUTT_DB=${POSTGRESKUTT_DB}
+      - POSTGRESKUTT_USER=${POSTGRESKUTT_USER}
+      - POSTGRESKUTT_PASSWORD=${POSTGRESKUTT_PASSWORD}
+      - SITE_TITLE=${SITE_TITLE}
+      - DEBUG=True
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./kutt:/app/kutt
+    # command: tail -f /dev/null
+    networks:
+      - escoteirosrs_gateway-network
+      
+
+networks:
+  escoteirosrs_gateway-network:
+    external: true

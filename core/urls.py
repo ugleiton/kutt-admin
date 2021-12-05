@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+import os
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
 ]
+admin.site.site_header  = os.getenv('SITE_TITLE',"Django Administration") # default: "Django Administration"
+admin.site.index_title  = os.getenv('SITE_TITLE',"Django Administration") # default: "Site administration"
+admin.site.site_title   = os.getenv('SITE_TITLE',"Django Administration") # default: "Django site admin"
+
