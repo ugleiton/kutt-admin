@@ -56,10 +56,10 @@ class LinksAdmin(admin.ModelAdmin):
         }),
     ]
 
-    # def get_model_perms(self, *args, **kwargs):
-    #     """
-    #             Return a dict of all perms for this model. This dict has the keys
-    #             ``add``, ``change``, ``delete``, and ``view`` mapping to the True/False
-    #             for each of those actions.
-    #             """
-    #     return {}
+    def get_model_perms(self, *args, **kwargs):
+        """
+                Return a dict of all perms for this model. This dict has the keys
+                ``add``, ``change``, ``delete``, and ``view`` mapping to the True/False
+                for each of those actions.
+                """
+        return {}

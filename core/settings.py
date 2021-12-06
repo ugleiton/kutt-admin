@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'kutt',
     'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'kutt'
 ]
 
 MIDDLEWARE = [
@@ -180,11 +180,11 @@ SIMPLEUI_CONFIG = {
                     'url': 'kutt/users/',
                     'icon': 'fa fa-users'
                 },
-                {
-                    'name': 'Links',
-                    'url': 'kutt/links/',
-                    'icon': 'fa fa-link'
-                },
+                # {
+                #     'name': 'Links',
+                #     'url': 'kutt/links/',
+                #     'icon': 'fa fa-link'
+                # },
         ]
     }]
 }
