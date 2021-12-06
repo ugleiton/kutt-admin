@@ -1,5 +1,6 @@
 {% load i18n static %}
 {% load simpletags %}
+{% load kutttags %}
 {% if cl.search_fields or cl.has_filters %}
     <script type="text/javascript">
         function preSubmit() {
@@ -18,7 +19,7 @@
         <form id="changelist-search" method="get" onsubmit="preSubmit(this)">
             <input type="hidden" name="p" value=""/>
             <!-- adição de botão voltar - ugleiton -->
-            <button id="bnt-voltar" type="button" class="el-button el-button--basic el-button--mini" onclick="window.location.href='{% get_previous_url %}'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
+            <button id="bnt-voltar" type="button" class="el-button el-button--basic el-button--mini" onclick="window.location.href='{% get_kprevious_url %}'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
                 <i class="fas fa-arrow-left"></i> <span>Voltar</span></span>
             </button>
             <div class="simpleui-form"><!-- DIV needed for valid HTML -->

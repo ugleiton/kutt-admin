@@ -97,7 +97,7 @@ class Links(models.Model):
         <button type="button" class="el-button el-button--button el-button--mini" onclick="window.location.href='/kutt/links/{self.pk}/change'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
             <i class="fas fa-edit"></i><span> <span>Editar</span></span>
         </button>
-        <button type="button" class="el-button el-button--warning el-button--mini" onclick="window.location.href='/kutt/links/{self.pk}/delete'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
+        <button type="button" class="el-button el-button--danger el-button--mini" onclick="window.location.href='/kutt/links/{self.pk}/delete'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
             <i class="fas fa-trash-alt"></i><span> <span>Apagar</span></span>
         </button>
         """
@@ -148,10 +148,10 @@ class Users(models.Model):
         <button type="button" class="el-button el-button--button el-button--mini" onclick="window.location.href='/kutt/users/{self.pk}/change'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
             <i class="fas fa-edit"></i><span> <span>Editar</span></span>
         </button>
-        <button type="button" class="el-button el-button--warning el-button--mini" onclick="window.location.href='/kutt/users/{self.pk}/delete'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
+        <button type="button" class="el-button el-button--danger el-button--mini" onclick="window.location.href='/kutt/users/{self.pk}/delete'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
             <i class="fas fa-trash-alt"></i><span> <span>Apagar</span></span>
         </button>
-        <button type="button" class="el-button el-button--primary el-button--mini" onclick="window.location.href='/kutt/links/?user__id__exact={self.pk}'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
+        <button type="button" class="el-button el-button--info el-button--mini" onclick="window.location.href='/kutt/links/?user__id__exact={self.pk}'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
             <i class="fas fa-bars"></i><span> <span>Links</span></span>
         </button>
         """
