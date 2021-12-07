@@ -13,8 +13,8 @@ class UsersAdmin(admin.ModelAdmin):
         ('Geral', {
             'fields': ['email', 
                        'verified',
-                       'banned',
-                       'banned_by',
+                    #    'banned',
+                    #    'banned_by',
                        'password',
                        'created_at',
                        'updated_at']
@@ -49,7 +49,7 @@ class LinksAdmin(admin.ModelAdmin):
                        'visit_count',
                        'user',
                        'password',
-                       'banned',
+                    #    'banned',
                        'expire_in',
                        'created_at',
                        'updated_at']
