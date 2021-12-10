@@ -169,10 +169,16 @@ SIMPLEUI_CONFIG = {
                     'name': 'Administradores',
                     'icon': 'fa fa-user-cog',
                     'url': 'auth/user/'
-                }]
+                },
+                {
+                    'name': 'Grupos Administradores',
+                    'icon': 'fa fa-users',
+                    'url': 'auth/group/'
+                },
+                ]
         }, 
         {
-            'name': 'Kutt',
+            'name': 'Acesso Usuário',
             'icon': 'fa fa-cogs',
             'models': [
                 {
