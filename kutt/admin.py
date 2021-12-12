@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Users,Links,Visits
+from .models import Users,Links,Visits,Domains,Hosts,Ips
 
 # Register your models here.
 @admin.register(Users)
@@ -13,8 +13,8 @@ class UsersAdmin(admin.ModelAdmin):
         ('Geral', {
             'fields': ['email', 
                        'verified',
-                    #    'banned',
-                    #    'banned_by',
+                       'banned',
+                       'banned_by',
                        'password',
                        'created_at',
                        'updated_at']
@@ -49,17 +49,22 @@ class LinksAdmin(admin.ModelAdmin):
                        'visit_count',
                        'user',
                        'password',
-                    #    'banned',
+                       'banned',
+                       'banned_by',
                        'expire_in',
                        'created_at',
                        'updated_at']
         }),
     ]
 
-    def get_model_perms(self, *args, **kwargs):
+    def get_model_perms(self, request, *args, **kwargs):
         """
                 Return a dict of all perms for this model. This dict has the keys
                 ``add``, ``change``, ``delete``, and ``view`` mapping to the True/False
                 for each of those actions.
                 """
-        return {}
+        return {
+            'add': False,
+            'change': self.has_change_permission(request),
+            'delete': self.has_delete_permission(request),
+        }

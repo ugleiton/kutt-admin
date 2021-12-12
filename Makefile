@@ -7,7 +7,7 @@ build-base:
 	docker build -t registry.gitlab.com/ugleiton/kutt-admin:base -f Dockerfile-base .
 
 .PHONY: build
-rebuild:
+build:
 	docker build -t registry.gitlab.com/ugleiton/kutt-admin:latest .
 	docker-compose -f docker-compose-dev.yml up -d
 

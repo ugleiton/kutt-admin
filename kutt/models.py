@@ -11,12 +11,13 @@ import bcrypt
 import base64
 import hashlib
 
+
 class Domains(models.Model):
-    banned = models.BooleanField()
-    banned_by = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True,related_name='domains_banned')
-    address = models.CharField(unique=True, max_length=255)
-    homepage = models.CharField(max_length=255, blank=True, null=True)
-    user = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True,related_name='domains')
+    banned = models.BooleanField(verbose_name='Banido',)
+    banned_by = models.ForeignKey('Users', models.DO_NOTHING,verbose_name='Banido por', blank=True, null=True,related_name='domains_banned')
+    address = models.CharField(unique=True, max_length=255,verbose_name='Endereço',)
+    homepage = models.CharField(max_length=255, blank=True, null=True,verbose_name='Homepage',)
+    user = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True,related_name='domains',verbose_name='Usuário',)
     uuid = models.UUIDField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
@@ -24,19 +25,27 @@ class Domains(models.Model):
     class Meta:
         managed = False
         db_table = 'domains'
+        verbose_name = "Domínio"
+        verbose_name_plural = "Domínios"
+    def __str__(self):
+        return "{}".format(self.address)
         
 
 
 class Hosts(models.Model):
-    address = models.CharField(unique=True, max_length=255)
-    banned = models.BooleanField()
-    banned_by = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True,related_name='hosts')
+    address = models.CharField(unique=True, max_length=255,verbose_name='Endereço',)
+    banned = models.BooleanField(verbose_name='Banido',)
+    banned_by = models.ForeignKey('Users', models.DO_NOTHING,verbose_name='Banido por', blank=True, null=True,related_name='hosts')
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 
     class Meta:
         managed = False
         db_table = 'hosts'
+        verbose_name = "Host"
+        verbose_name_plural = "Hosts"
+    def __str__(self):
+        return "{}".format(self.address)
 
 
 class Ips(models.Model):
@@ -47,6 +56,10 @@ class Ips(models.Model):
     class Meta:
         managed = False
         db_table = 'ips'
+        verbose_name = "IP"
+        verbose_name_plural = "IPs"
+    def __str__(self):
+        return "{}".format(self.ip)
 
 
 class KnexMigrations(models.Model):
@@ -72,8 +85,8 @@ class Links(models.Model):
     address = models.CharField(verbose_name='URL Curta',max_length=255)
     description = models.CharField(verbose_name='Descrição',max_length=255, blank=True, null=True)
     banned = models.BooleanField(verbose_name='Banido')
-    banned_by = models.ForeignKey('Users', models.CASCADE, blank=True, null=True,related_name='links_banned')
-    domain = models.ForeignKey(Domains, models.DO_NOTHING, blank=True, null=True)
+    banned_by = models.ForeignKey('Users', models.CASCADE,verbose_name='Banido por', blank=True, null=True,related_name='links_banned')
+    domain = models.ForeignKey(Domains, models.DO_NOTHING,verbose_name='Dominio', blank=True, null=True)
     password = models.CharField(max_length=255,verbose_name="Senha", blank=True, null=True)
     expire_in = models.DateTimeField(blank=True, null=True,verbose_name="Expira em")
     target = models.CharField(verbose_name="URL Original",max_length=2040)
@@ -118,7 +131,7 @@ class Links(models.Model):
 
 
 class Users(models.Model):
-    apikey = models.CharField(max_length=255, blank=True, null=True)
+    apikey = models.CharField(max_length=255,verbose_name='Api Key', blank=True, null=True)
     banned = models.BooleanField(verbose_name='Banido')
     banned_by = models.ForeignKey('self', models.DO_NOTHING,verbose_name='Banido por', blank=True, null=True,related_name='users_banned')
     cooldowns = models.TextField(blank=True, null=True)  # This field type is a guess.
@@ -143,6 +156,7 @@ class Users(models.Model):
 
     def __str__(self):
         return "{}".format(self.email)
+
     def _opcoes(self):
         opcoes = f"""
         <button type="button" class="el-button el-button--button el-button--mini" onclick="window.location.href='/kutt/users/{self.pk}/change'" style="float: left; margin-right: 10px; margin-bottom: 10px;">
@@ -172,11 +186,11 @@ class Users(models.Model):
         super().save(force_insert, force_update, *args, **kwargs)
 
 class Visits(models.Model):
-    countries = models.JSONField(blank=True, null=True)
+    countries = models.JSONField(blank=True,verbose_name='Paises', null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField(blank=True, null=True)
-    link = models.ForeignKey(Links, models.CASCADE)
-    referrers = models.JSONField(blank=True, null=True)
+    link = models.ForeignKey(Links, models.CASCADE,verbose_name='Link',)
+    referrers = models.JSONField(blank=True, null=True,verbose_name='Referência',)
     total = models.IntegerField()
     br_chrome = models.IntegerField()
     br_edge = models.IntegerField()
@@ -197,3 +211,5 @@ class Visits(models.Model):
         db_table = 'visits'
         verbose_name = "Visita"
         verbose_name_plural = "Visitas"
+    def __str__(self):
+        return "{}".format(self.link)
