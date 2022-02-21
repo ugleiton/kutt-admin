@@ -28,6 +28,29 @@ build-image-base:
   except:
     - schedules
 
+build-image-base-arm:
+  image: docker:git
+  stage: build-images
+  cache: {}
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build -f Dockerfile-base-arm64 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME -t $CI_REGISTRY_IMAGE:base-arm64 .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE:base-arm64
+  dependencies: []
+  needs: []
+  when: manual
+  only:
+    - develop
+    - master
+    - tags
+  except:
+    - schedules
 
 build-image-latest:
   image: docker:git
@@ -43,6 +66,29 @@ build-image-latest:
     - docker build -f Dockerfile -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME -t $CI_REGISTRY_IMAGE:latest .
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
     - docker push $CI_REGISTRY_IMAGE:latest
+  dependencies: []
+  needs: []
+  when: manual
+  only:
+    - master
+    - tags
+  except:
+    - schedules
+
+build-image-latest-arm:
+  image: docker:git
+  stage: build-images
+  cache: {}
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build -f Dockerfile-arm64 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME -t $CI_REGISTRY_IMAGE:latest-arm64 .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE:latest-arm64
   dependencies: []
   needs: []
   when: manual

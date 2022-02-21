@@ -1,0 +1,27 @@
+FROM arm64v8/python:3.8-slim-buster
+ENV PYTHONUNBUFFERED 1
+
+RUN mkdir /app && mkdir /app/static && mkdir /app/staticfiles
+WORKDIR /app
+COPY requirements.txt /app/requirements.txt
+COPY requirements/base.txt /app/requirements/
+
+RUN apt-get update \
+ && apt-get install -y curl \
+ && apt-get install -y wget \
+ && apt-get install -y --no-install-recommends gcc python-dev \
+ # postgresql
+ && apt-get install -y libpq-dev \
+ # projeto
+ && python -m pip install --upgrade pip \
+ && pip install -r requirements.txt \
+ && pip install gunicorn \
+ && mkdir /var/log/gunicorn/ \
+ && rm -rf /var/lib/apt/lists/* \
+ && apt-get purge -y --auto-remove gcc python-dev \
+ && apt-get clean -y
+ 
+
+
+ENV TZ=America/Sao_Paulo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
